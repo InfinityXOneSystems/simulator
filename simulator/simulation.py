@@ -192,12 +192,13 @@ class Simulation:
         if vel_along_normal > 0:
             return
 
-        # Calculate impulse scalar (elastic collision)
-        impulse = (2 * vel_along_normal) / (1 / m1 + 1 / m2)
+        # Calculate impulse scalar (elastic collision with restitution = 1)
+        # Formula: j = -(1 + e) * v_rel_n / (1/m1 + 1/m2) where e = 1
+        impulse = -2 * vel_along_normal / (1 / m1 + 1 / m2)
 
         # Apply impulse to velocities
-        vel1 -= (impulse / m1) * normal
-        vel2 += (impulse / m2) * normal
+        vel1 += (impulse / m1) * normal
+        vel2 -= (impulse / m2) * normal
 
         p1.velocity = tuple(vel1)
         p2.velocity = tuple(vel2)
